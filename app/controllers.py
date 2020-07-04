@@ -1,16 +1,20 @@
 from app import app
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, jsonify
 from app.models import Pessoa
 
 
 @app.route('/')
 def index():
-    page = request.args.get('p', 1, type=int)
-    pessoas = Pessoa.select(Pessoa, page, 5)
+    return render_template('index.html')
 
-    return render_template('index.html', pessoas=pessoas)
+@app.route('/pessoas/select', methods = ['POST'])
+def select_pessoas():
+    pessoas = Pessoa.query.all()
+    data_json = {'data':[{"DT_RowId":f"row_{p.id}", "ID":p.id, "CPF":p.cpf, "NOME":p.nome, "AÇÕES":p.button_actions()} for p in pessoas]}
 
-@app.route('/insert.pessoa', methods = ['POST'])
+    return jsonify(data_json)
+
+@app.route('/pessoas/insert', methods = ['POST'])
 def insert_pessoa():
     if request.method == 'POST':
         cpf = request.form['cpf']
@@ -20,13 +24,13 @@ def insert_pessoa():
         try:
             pessoa.insert()
 
-            flash('dados cadastrados com sucesso!', 'alert-success')
+            return 'dados cadastrados com sucesso!'
         except Exception:
-            flash('cpf e/ou nome já cadastrado', 'alert-danger')
+            return 'cpf e/ou nome já cadastrado'
 
         return redirect(url_for('index'))
 
-@app.route('/update.pessoa', methods = ['POST'])
+@app.route('/pessoas/update', methods = ['POST'])
 def update_pessoa():
     if request.method == 'POST':
         pessoa = Pessoa.query.filter_by(id=request.form['id']).first()
@@ -36,13 +40,13 @@ def update_pessoa():
         try:
             pessoa.update()
 
-            flash('dados alterados com sucesso!', 'alert-success')
+            return 'dados alterados com sucesso!'
         except Exception:
-            flash('cpf e/ou nome já cadastrado', 'alert-danger')
+            return 'cpf e/ou nome já cadastrado'
 
         return redirect(url_for('index'))
 
-@app.route('/delete.pessoa/<int:id>')
+@app.route('/pessoas/delete', methods = ['POST'])
 def delete_pessoa(id):
     pessoa = Pessoa.query.filter_by(id=id).first()
     pessoa.delete()

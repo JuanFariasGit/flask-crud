@@ -19,13 +19,9 @@ class Pessoa(Base):
     def __repr__(self):
         return '<Pessoa {}>'.format(self.cpf)
 
-    def select(self, page, limit):
-        self.page = page
-        self.limit = limit
-
-        pessoas = paginate(db_session.query(self).order_by(desc(self.id)), self.page, self.limit)
-        return pessoas
-
+    def button_actions(self):
+        return f'<button class="btn btn-sm btn-primary" onclick="editar({self.id})">EDITAR</button> <button class="btn btn-sm btn-danger" onclick="deletar({self.id})">DELETAR</button>'
+    
     def insert(self):
         db_session.execute('INSERT INTO pessoa (cpf, nome) VALUES (:param1, :param2)',
         {'param1':self.cpf, 'param2':self.nome})
