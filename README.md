@@ -1,4 +1,6 @@
-<h1>CRUD COM PYTHON E FLASK</h1>
+<h1>CRUD</h1>
+
+CRUD COM PYTHON E FLASK
 
 https://juanfariaspy.pythonanywhere.com/
 
