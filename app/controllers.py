@@ -47,8 +47,8 @@ def update_pessoa():
         return redirect(url_for('index'))
 
 @app.route('/pessoas/delete', methods = ['POST'])
-def delete_pessoa(id):
-    pessoa = Pessoa.query.filter_by(id=id).first()
+def delete_pessoa():
+    pessoa = Pessoa.query.filter_by(id=int(request.form['id'])).first()
     pessoa.delete()
 
     return redirect(url_for('index'))

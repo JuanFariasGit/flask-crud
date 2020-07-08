@@ -20,7 +20,7 @@ class Pessoa(Base):
         return '<Pessoa {}>'.format(self.cpf)
 
     def button_actions(self):
-        return f'<button class="btn btn-sm btn-primary" onclick="editar({self.id})">EDITAR</button> <button class="btn btn-sm btn-danger" onclick="deletar({self.id})">DELETAR</button>'
+        return f'<button class="btn btn-sm btn-primary" onclick="editar({self.id})"><i class="far fa-edit fa-lg"></i></button> <button class="btn btn-sm btn-danger" onclick="deletar({self.id})"><i class="far fa-trash-alt fa-lg"></i></button>'
     
     def insert(self):
         db_session.execute('INSERT INTO pessoa (cpf, nome) VALUES (:param1, :param2)',
