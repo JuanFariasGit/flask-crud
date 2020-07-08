@@ -175,9 +175,9 @@
             'url': 'http://127.0.0.1:5000/pessoas/update',
             'data': {'id':id, 'cpf':cpf, 'nome':nome}
         })
-        tabela.cell($(`#row_${id}`), 0).data(id).draw()
-        tabela.cell($(`#row_${id}`), 1).data(cpf).draw()
-        tabela.cell($(`#row_${id}`), 2).data(nome).draw()
+        tabela.cell($(`#row_${id}`), 0).data(id).draw(false)
+        tabela.cell($(`#row_${id}`), 1).data(cpf).draw(false)
+        tabela.cell($(`#row_${id}`), 2).data(nome).draw(false)
         fecharForm()
     }
 
