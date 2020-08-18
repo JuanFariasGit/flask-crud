@@ -21,14 +21,13 @@ def insert_pessoa():
         nome = request.form['nome']
 
         pessoa = Pessoa(cpf=cpf, nome=nome)
+        
         try:
             pessoa.insert()
 
             return 'dados cadastrados com sucesso!'
         except Exception:
             return 'cpf e/ou nome já cadastrado'
-
-        return redirect(url_for('index'))
 
 @main.route('/pessoas/update', methods = ['POST'])
 def update_pessoa():
@@ -44,11 +43,13 @@ def update_pessoa():
         except Exception:
             return 'cpf e/ou nome já cadastrado'
 
-        return redirect(url_for('index'))
-
 @main.route('/pessoas/delete', methods = ['POST'])
 def delete_pessoa():
     pessoa = Pessoa.query.filter_by(id=int(request.form['id'])).first()
-    pessoa.delete()
 
-    return redirect(url_for('index'))
+    try:
+        pessoa.delete()
+
+        return 'dados deletados com sucesso!'
+    except Exception:
+        return 'cpf e/ou nome já cadastrado'
