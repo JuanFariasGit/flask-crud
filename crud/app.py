@@ -9,10 +9,11 @@ def create_app():
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/crud_flask'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = os.urandom(256)
 
     db.init_app(app)
     Migrate(app, db)
+
+    app.config['SECRET_KEY'] = os.urandom(256)
 
     app.register_blueprint(main)
 
