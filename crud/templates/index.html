@@ -13,6 +13,7 @@
 {% block content %} 
 <div class="container">
     <button class="btn btn-sm btn-primary mb-2" onclick="adicionar()"><i class="fas fa-plus-circle fa-lg"></i></button>
+    <h5 class="text-info">OBS: UTILIZE O SITE <a href="https://www.4devs.com.br/gerador_de_cpf" target="_blank">https://www.4devs.com.br/gerador_de_cpf</a> PARA GERAR UM CPF VÁLIDO.</h5>
     <table id="tabela" class="table table-striped table-bordered text-center">
         <thead>
             <tr>
@@ -73,6 +74,8 @@
         rules: {
             nome: {
                 required:true,
+                maxlength:40,
+                minlength:4,
                 minWords:2
             },
             cpf: {
@@ -141,8 +144,6 @@
         $('#modal-form').find('form input[name="cpf"]').val('')
         $('#modal-form').find('form input[name="nome"]').val('')
         $('#modal-form').find('form button').html('')
-        $(".form-control").removeClass("is-invalid")
-        $(".error").remove()
         $('#modal-form').find('form').off('submit')
     }
 
@@ -178,7 +179,7 @@
         const cpf = $(this).find('input[name="cpf"]').val()
         const nome = $(this).find('input[name="nome"]').val()
 
-        if (cpf.length === 14 && nome.length >= 6 && nome.length <= 40) {
+        if (cpf.length === 14 && nome.length >= 4 && nome.length <= 40) {
                 $.ajax ({
                 'method': 'POST',
                 'url': 'http://127.0.0.1:5000/pessoas/insert',
@@ -197,7 +198,7 @@
         const cpf = $(this).find('input[name="cpf"]').val()
         const nome = $(this).find('input[name="nome"]').val()
 
-        if (cpf.length === 14 && nome.length >= 6 && nome.length <= 40) {
+        if (cpf.length === 14 && nome.length >= 4 && nome.length <= 40) {
             $.ajax ({
                 'method': 'POST',
                 'url': 'http://127.0.0.1:5000/pessoas/update',
