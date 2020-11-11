@@ -69,6 +69,8 @@
 
 {% block script %}
 <script>
+    $('#cpf').mask('000.000.000-00')
+
     $('#form-validate').validate({
         rules: {
             nome: {
@@ -138,12 +140,13 @@
 
     function fecharForm() {
         $('#modal-form').modal('hide')
-        $('#modal-form').find('.modal-header').html('')
-        $('#modal-form').find('form input[name=id]').remove()
-        $('#modal-form').find('form input[name="cpf"]').val('')
-        $('#modal-form').find('form input[name="nome"]').val('')
-        $('#modal-form').find('form button').html('')
-        $('#modal-form').find('form').off('submit')
+        $('#modal-form').find('form').off('submit', adicionarPessoa)
+        $('#modal-form').find('form').trigger("reset")
+        Array.from(document.querySelectorAll(".form-control")).map((dev) => {
+           if (dev.classList.contains('is-invalid') == true) {
+                dev.classList.remove('is-invalid')
+            } 
+        })
     }
 
     function adicionar() {
