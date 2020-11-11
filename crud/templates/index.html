@@ -143,6 +143,8 @@
         $('#modal-form').find('form input[name="cpf"]').val('')
         $('#modal-form').find('form input[name="nome"]').val('')
         $('#modal-form').find('form button').html('')
+        $(".form-control").removeClass("is-invalid")
+        $(".error").remove()
         $('#modal-form').find('form').off('submit')
     }
 
