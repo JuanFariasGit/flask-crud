@@ -71,24 +71,15 @@
 <script>
     $('#cpf').mask('000.000.000-00')
 
-    $.validator.addMethod('cpf', function(value, element) {
-            if (value.length === 14) {
-                return true
-            } else {
-                return false
-            }
-        },'Por favor, forneça um cpf válido')
-
     $('#form-validate').validate({
         rules: {
             nome: {
                 required:true,
-                maxlength:40,
-                minlength:6
+                minWords:2
             },
             cpf: {
                 required:true,
-                cpf:true
+                cpfBR:true
             }
         },
         errorElement: 'span',
