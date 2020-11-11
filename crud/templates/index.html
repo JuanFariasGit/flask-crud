@@ -37,10 +37,10 @@
             <div class="modal-content">
                 <div class="modal-header"></div>
                 <div class="modal-body">
-                    <form method="post">
+                    <form id='form-validate' method="post">
                         <div class="form-group">
                             <label for="cpf">CPF</label>
-                            <input class="form-control" type="text" id="cpf" name="cpf">	
+                            <input class="form-control" type="text" id="cpf" name="cpf" placeholder="Ex.: 000.000.000-00">	
 			            </div>
                         <div class="form-group">
                             <label for="nome">NOME</label>
@@ -69,6 +69,40 @@
 
 {% block script %}
 <script>
+    $('#cpf').mask('000.000.000-00')
+
+    $.validator.addMethod('cpf', function(value, element) {
+            if (value.length === 14) {
+                return true
+            } else {
+                return false
+            }
+        },'Por favor, forneça um cpf válido')
+
+    $('#form-validate').validate({
+        rules: {
+            nome: {
+                required:true,
+                maxlength:40,
+                minlength:6
+            },
+            cpf: {
+                required:true,
+                cpf:true
+            }
+        },
+        errorElement: 'span',
+            errorPlacement: function (error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        }
+    })
 
     const tabela = $('#tabela').DataTable( {
         "responsive": true,
@@ -153,15 +187,17 @@
         const cpf = $(this).find('input[name="cpf"]').val()
         const nome = $(this).find('input[name="nome"]').val()
 
-        $.ajax ({
-            'method': 'POST',
-            'url': 'http://127.0.0.1:5000/pessoas/insert',
-            'data': {'cpf':cpf, 'nome':nome},
-            'success': function(resposta) {
-                fecharForm()
-                tabela.ajax.reload()                
-            }
-        })
+        if (cpf.length === 14 && nome.length >= 6 && nome.length <= 40) {
+                $.ajax ({
+                'method': 'POST',
+                'url': 'http://127.0.0.1:5000/pessoas/insert',
+                'data': {'cpf':cpf, 'nome':nome},
+                'success': function(resposta) {
+                    fecharForm()
+                    tabela.ajax.reload()                
+                }
+            })
+        }
     }
 
     function editarPessoa(e) {
@@ -170,15 +206,17 @@
         const cpf = $(this).find('input[name="cpf"]').val()
         const nome = $(this).find('input[name="nome"]').val()
 
-        $.ajax ({
-            'method': 'POST',
-            'url': 'http://127.0.0.1:5000/pessoas/update',
-            'data': {'id':id, 'cpf':cpf, 'nome':nome}
-        })
-        tabela.cell($(`#row_${id}`), 0).data(id).draw(false)
-        tabela.cell($(`#row_${id}`), 1).data(cpf).draw(false)
-        tabela.cell($(`#row_${id}`), 2).data(nome).draw(false)
-        fecharForm()
+        if (cpf.length === 14 && nome.length >= 6 && nome.length <= 40) {
+            $.ajax ({
+                'method': 'POST',
+                'url': 'http://127.0.0.1:5000/pessoas/update',
+                'data': {'id':id, 'cpf':cpf, 'nome':nome}
+            })
+            tabela.cell($(`#row_${id}`), 0).data(id).draw(false)
+            tabela.cell($(`#row_${id}`), 1).data(cpf).draw(false)
+            tabela.cell($(`#row_${id}`), 2).data(nome).draw(false)
+            fecharForm()
+        }
     }
 
     function deletarPessoa(id) {
