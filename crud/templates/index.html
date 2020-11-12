@@ -181,7 +181,7 @@
         const cpf = $(this).find('input[name="cpf"]').val()
         const nome = $(this).find('input[name="nome"]').val()
 
-        if (document.querySelector(".cpf").classList.contains('is-invalid') === false && document.querySelector(".nome").classList.contains('is-invalid') === false) {
+        if (document.querySelector("#cpf").classList.contains('is-invalid') === false && document.querySelector("#nome").classList.contains('is-invalid') === false) {
                 $.ajax ({
                 'method': 'POST',
                 'url': 'http://127.0.0.1:5000/pessoas/insert',
@@ -200,7 +200,7 @@
         const cpf = $(this).find('input[name="cpf"]').val()
         const nome = $(this).find('input[name="nome"]').val()
 
-        if (document.querySelector(".cpf").classList.contains('is-invalid') === false && document.querySelector(".nome").classList.contains('is-invalid') === false) {
+        if (document.querySelector("#cpf").classList.contains('is-invalid') === false && document.querySelector("#nome").classList.contains('is-invalid') === false) {
             $.ajax ({
                 'method': 'POST',
                 'url': 'http://127.0.0.1:5000/pessoas/update',
