@@ -140,12 +140,14 @@
 
     function fecharForm() {
         $('#modal-form').modal('hide')
+        $('#modal-form').find('form input[name=id]').remove()
         $('#modal-form').find('form').off('submit', adicionarPessoa)
+        $('#modal-form').find('form').off('submit', editarPessoa)
         $('#modal-form').find('form').trigger("reset")
         Array.from(document.querySelectorAll(".form-control")).map((dev) => {
            if (dev.classList.contains('is-invalid') == true) {
                 dev.classList.remove('is-invalid')
-            } 
+            }
         })
     }
 
