@@ -21,7 +21,7 @@ def insert_pessoa():
         nome = request.form['nome']
 
         pessoa = Pessoa(cpf=cpf, nome=nome)
-        
+
         try:
             pessoa.insert()
 
