@@ -37,7 +37,7 @@
             <div class="modal-content">
                 <div class="modal-header"></div>
                 <div class="modal-body">
-                    <form id='form-validate' method="post">
+                    <form id='form' method="post">
                         <div class="form-group">
                             <label for="cpf">CPF</label>
                             <input class="form-control" type="text" id="cpf" name="cpf" placeholder="Ex.: 000.000.000-00">
@@ -71,7 +71,7 @@
 <script>
     $('#cpf').mask('000.000.000-00')
 
-    $('#form-validate').validate({
+    $('#form').validate({
         rules: {
             nome: {
                 required:true,
@@ -180,14 +180,13 @@
 
     function adicionarPessoa(e) {
         e.preventDefault()
-        const cpf = $(this).find('input[name="cpf"]').val()
-        const nome = $(this).find('input[name="nome"]').val()
+        let data = new FormData(document.getElementById("form"))
 
         if (document.querySelector("#cpf").classList.contains('is-invalid') === false && document.querySelector("#nome").classList.contains('is-invalid') === false) {
                 $.ajax ({
                 'method': 'POST',
                 'url': 'http://127.0.0.1:5000/pessoas/insert',
-                'data': {'cpf':cpf, 'nome':nome},
+                'data': {'cpf':data.get("cpf"), 'nome':data.get("nome")},
                 'success': function(resposta) {
                     fecharForm()
                     tabela.ajax.reload()
@@ -198,19 +197,17 @@
 
     function editarPessoa(e) {
         e.preventDefault()
-        const id = $(this).find('input[name="id"]').val()
-        const cpf = $(this).find('input[name="cpf"]').val()
-        const nome = $(this).find('input[name="nome"]').val()
+        let data = new FormData(document.getElementById("form"))
 
         if (document.querySelector("#cpf").classList.contains('is-invalid') === false && document.querySelector("#nome").classList.contains('is-invalid') === false) {
             $.ajax ({
                 'method': 'POST',
                 'url': 'http://127.0.0.1:5000/pessoas/update',
-                'data': {'id':id, 'cpf':cpf, 'nome':nome}
+                'data': {'id':data.get('id'), 'cpf':data.get('cpf'), 'nome':data.get('nome')}
             })
-            tabela.cell($(`#row_${id}`), 0).data(id).draw(false)
-            tabela.cell($(`#row_${id}`), 1).data(cpf).draw(false)
-            tabela.cell($(`#row_${id}`), 2).data(nome).draw(false)
+            tabela.cell($(`#row_${data.get('id')}`), 0).data(data.get('id')).draw(false)
+            tabela.cell($(`#row_${data.get('id')}`), 1).data(data.get('cpf')).draw(false)
+            tabela.cell($(`#row_${data.get('id')}`), 2).data(data.get('nome')).draw(false)
             fecharForm()
         }
     }

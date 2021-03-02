@@ -7,7 +7,7 @@ import secrets
 def create_app():
     app = Flask(__name__)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/crud_flask'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:1234@localhost/crud_flask'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_POOL_RECYCLE'] = 280
 
