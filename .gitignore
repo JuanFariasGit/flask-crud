@@ -6,5 +6,6 @@ __pycache__
 # Env
 .venv
 
+
 # Visual Studio
-.vscode/
+.vscode
