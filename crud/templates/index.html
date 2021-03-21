@@ -13,6 +13,7 @@
 {% block content %}
 <div class="container">
     <button class="btn btn-sm btn-primary mb-2" onclick="adicionar()"><i class="fas fa-plus-circle fa-lg"></i></button>
+    <div id="mensagem"></div>
     <table id="tabela" class="table table-striped table-bordered text-center">
         <thead>
             <tr>
@@ -188,8 +189,26 @@
                 'url': 'http://127.0.0.1:5000/pessoas/insert',
                 'data': {'cpf':data.get("cpf"), 'nome':data.get("nome")},
                 'success': function(resposta) {
+                    if (resposta.status === 'success') {
+                      $('#mensagem').html(`
+                      <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${resposta.mensagem}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      `)
+                      tabela.ajax.reload()
+                    } else if (resposta.status === 'error') {
+                      $('#mensagem').html(`<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${resposta.mensagem}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      `)
+                    }
                     fecharForm()
-                    tabela.ajax.reload()
                 }
             })
         }
@@ -203,12 +222,32 @@
             $.ajax ({
                 'method': 'POST',
                 'url': 'http://127.0.0.1:5000/pessoas/update',
-                'data': {'id':data.get('id'), 'cpf':data.get('cpf'), 'nome':data.get('nome')}
+                'data': {'id':data.get('id'), 'cpf':data.get('cpf'), 'nome':data.get('nome')},
+                  success: function(resposta) {
+                    if (resposta.status === 'success') {
+                      tabela.cell($(`#row_${data.get('id')}`), 0).data(data.get('id')).draw(false)
+                      tabela.cell($(`#row_${data.get('id')}`), 1).data(data.get('cpf')).draw(false)
+                      tabela.cell($(`#row_${data.get('id')}`), 2).data(data.get('nome')).draw(false)
+                      $('#mensagem').html(`
+                      <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${resposta.mensagem}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      `)
+                    } else if (resposta.status === 'error') {
+                      $('#mensagem').html(`<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${resposta.mensagem}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      `)
+                    }
+                    fecharForm()
+                  }
             })
-            tabela.cell($(`#row_${data.get('id')}`), 0).data(data.get('id')).draw(false)
-            tabela.cell($(`#row_${data.get('id')}`), 1).data(data.get('cpf')).draw(false)
-            tabela.cell($(`#row_${data.get('id')}`), 2).data(data.get('nome')).draw(false)
-            fecharForm()
         }
     }
 
@@ -217,8 +256,17 @@
             method: 'POST',
             url: 'http://127.0.0.1:5000/pessoas/delete',
             data: {'id': id},
-            success: function() {
-                tabela.row(`#row_${id}`).remove().draw(false);
+            success: function(resposta) {
+                if (resposta.status == 'success') {
+                  $('#mensagem').html(`<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ${resposta.mensagem}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  `)
+                  tabela.row(`#row_${id}`).remove().draw(false);
+                }
                 fechar()
             }
         })

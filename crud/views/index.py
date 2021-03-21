@@ -7,12 +7,14 @@ main = Blueprint('main', __name__, template_folder='templates', static_folder='s
 def index():
     return render_template('index.html')
 
+
 @main.route('/pessoas/select', methods = ['POST'])
 def select_pessoas():
     pessoas = Pessoa.query.all()
     data_json = {'data':[{"DT_RowId":f"row_{p.id}", "ID":p.id, "CPF":p.cpf, "NOME":p.nome, "AÇÕES":p.button_actions()} for p in pessoas]}
 
     return jsonify(data_json)
+
 
 @main.route('/pessoas/insert', methods = ['POST'])
 def insert_pessoa():
@@ -25,9 +27,10 @@ def insert_pessoa():
         try:
             pessoa.insert()
 
-            return 'dados cadastrados com sucesso!'
+            return {'status':'success','mensagem':'dados cadastrados com sucesso!'}
         except Exception:
-            return 'cpf e/ou nome já cadastrado'
+            return {'status':'error','mensagem':'cpf já cadastrado'}
+
 
 @main.route('/pessoas/update', methods = ['POST'])
 def update_pessoa():
@@ -39,17 +42,13 @@ def update_pessoa():
         try:
             pessoa.update()
 
-            return 'dados alterados com sucesso!'
+            return {'status':'success','mensagem':'dados alterados com sucesso!'}
         except Exception:
-            return 'cpf e/ou nome já cadastrado'
+            return {'status':'error','mensagem':'cpf já cadastrado'}
+
 
 @main.route('/pessoas/delete', methods = ['POST'])
 def delete_pessoa():
     pessoa = Pessoa.query.filter_by(id=int(request.form['id'])).first()
-
-    try:
-        pessoa.delete()
-
-        return 'dados deletados com sucesso!'
-    except Exception:
-        return 'cpf e/ou nome já cadastrado'
+    pessoa.delete()
+    return {'status':'success','mensagem':'dados deletado com sucesso!'}
