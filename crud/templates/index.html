@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label for="cpf">CPF</label>
                             <input class="form-control" type="text" id="cpf" name="cpf" placeholder="Ex.: 000.000.000-00">
-			            </div>
+                       </div>
                         <div class="form-group">
                             <label for="nome">NOME</label>
                             <input class="form-control" type="text" id="nome" name="nome">
@@ -108,7 +108,7 @@
         "order": [[ 0, "desc" ]],
         "ajax": {
             "method": "POST",
-            "url": "http://127.0.0.1:5000/pessoas/select",
+            "url": `${location.href}pessoas/select`,
         },
         "columns": [
             {"data":"ID"},
@@ -186,7 +186,7 @@
         if (document.querySelector("#cpf").classList.contains('is-invalid') === false && document.querySelector("#nome").classList.contains('is-invalid') === false) {
                 $.ajax ({
                 'method': 'POST',
-                'url': 'http://127.0.0.1:5000/pessoas/insert',
+                'url': `${location.href}pessoas/insert`,
                 'data': {'cpf':data.get("cpf"), 'nome':data.get("nome")},
                 'success': function(resposta) {
                     if (resposta.status === 'success') {
@@ -221,7 +221,7 @@
         if (document.querySelector("#cpf").classList.contains('is-invalid') === false && document.querySelector("#nome").classList.contains('is-invalid') === false) {
             $.ajax ({
                 'method': 'POST',
-                'url': 'http://127.0.0.1:5000/pessoas/update',
+                'url': `${location.href}pessoas/update`,
                 'data': {'id':data.get('id'), 'cpf':data.get('cpf'), 'nome':data.get('nome')},
                   success: function(resposta) {
                     if (resposta.status === 'success') {
@@ -254,7 +254,7 @@
     function deletarPessoa(id) {
         $.ajax({
             method: 'POST',
-            url: 'http://127.0.0.1:5000/pessoas/delete',
+            url: `${location.href}pessoas/delete`,
             data: {'id': id},
             success: function(resposta) {
                 if (resposta.status == 'success') {
